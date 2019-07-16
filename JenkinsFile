@@ -1,0 +1,65 @@
+properties([[$class: 'JiraProjectProperty'], parameters([string(defaultValue: 'smart-businesstax-discovery-inbound', description: 'Please provide artifact name', name: 'ARTIFACT', trim: false), string(defaultValue: '1.0.0', description: 'Mention artifcat version ', name: 'ARTIFACT_VERSION', trim: false)]), pipelineTriggers([<object of type org.jenkinsci.plugins.fstrigger.triggers.FolderContentTrigger>])])
+pipeline {
+ 
+    agent any
+    stages{
+
+    stage('Upload into Nexus repository') {
+                agent { label 'master' }
+                steps {
+              
+                  echo 'Nexus Upload'
+                  withCredentials([usernamePassword(credentialsId: 'NexusAdmin', passwordVariable: 'Nexus_PWD', usernameVariable: 'Nexus_ID')]) {
+                  sh label: '', returnStatus: true, script: '''
+                  cp -R /var/lib/jenkins/smart-businesstax-discovery-inbound/*.zip $WORKSPACE
+
+                  VAR=$(ls)
+                  mvn deploy:deploy-file \\
+                      -DgroupId=com.ccsf.smart \\
+                      -DartifactId=$ARTIFACT\\
+                      -Dversion=$ARTIFACT_VERSION.$BUILD_NUMBER \\
+                      -Dpackaging=zip \\
+                      -Dfile=$VAR \\
+                      -DgeneratePom=true \\
+                      -DupdateReleaseInfo=true \\
+                      -Durl="http://$Nexus_ID:$Nexus_PWD@localhost:8081/repository/com.ccsf.smart/"
+                      rm -rf *
+                      rm -rf /var/lib/jenkins/smart-businesstax-discovery-inbound/*'''
+                  }
+                  
+              }
+          }
+
+        stage('Deploy into Dev Server') {
+
+              agent { label 'int-node-1' }
+                  steps {
+
+                ws("/root/jenkins")
+                
+                {
+                  sh label: '', script: '''
+                mvn dependency:get -DrepoUrl=http://10.0.14.106:8081/repository/com.ccsf.smart -Dartifact=com.ccsf.smart:$ARTIFACT:$ARTIFACT_VERSION.$BUILD_NUMBER:zip -Dtransitive=false -Ddest=$ARTIFACT-$BUILD_NUMBER.zip 
+                ls -lia
+                '''
+                }
+            }
+        }
+
+
+        stage('create release file') {
+
+                   agent { label 'master' }
+                       steps {
+
+                       sh label: '', script: '''
+                       cd /app/JobRelease/
+                       cat /app/JobRelease/latest_release.txt | grep -v ${ARTIFACT} >  RELEASE_${ARTIFACT_VERSION}.${BUILD_NUMBER}.txt
+                       echo ${ARTIFACT}:${ARTIFACT_VERSION}:${BUILD_NUMBER} >> RELEASE_${ARTIFACT_VERSION}.${BUILD_NUMBER}.txt
+                       cp RELEASE_${ARTIFACT_VERSION}.${BUILD_NUMBER}.txt latest_release.txt
+                       '''
+                       }
+          }
+        }    
+    }  
+      
