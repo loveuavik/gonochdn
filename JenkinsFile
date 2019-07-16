@@ -1,5 +1,4 @@
-properties([parameters([string(defaultValue: 'smart-businesstax-discovery-inbound', description: '', name: 'ARTIFACT', trim: false), string(defaultValue: '1.0.0', description: '', name: 'ARTIFACT_VERSION', trim: false)])])
-
+properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '')), parameters([string(defaultValue: 'smart-businesstax-discovery-inbound', description: '', name: 'ARTIFACT', trim: false), string(defaultValue: '1.0.0', description: '', name: 'ARTIFACT_VERSION', trim: false)])])
 pipeline {
     
     agent { label 'master' }
