@@ -1,6 +1,5 @@
 pipeline {
- properties([[$class: 'JiraProjectProperty'], parameters([string(defaultValue: 'smart-businesstax-discovery-inbound', description: 'Please provide artifact name', name: 'ARTIFACT', trim: false), string(defaultValue: '1.0.0', description: 'Mention artifcat version ', name: 'ARTIFACT_VERSION', trim: false)]), pipelineTriggers([<object of type org.jenkinsci.plugins.fstrigger.triggers.FolderContentTrigger>])])
-
+properties([[$class: 'JiraProjectProperty'], parameters([string(defaultValue: 'smart-businesstax-discovery-inbound', description: '', name: 'ARTIFACT', trim: false), string(defaultValue: '1.0.0', description: '', name: 'ARTIFACT_VERSION', trim: false)])])
     agent any
     stages{
 
