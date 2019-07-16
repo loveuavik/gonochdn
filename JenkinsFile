@@ -1,9 +1,9 @@
 pipeline {
     
     agent { label 'master' }
-    environment {
+    
         properties([parameters([string(defaultValue: 'smart-businesstax-discovery-inbound', description: '', name: 'ARTIFACT', trim: false), string(defaultValue: '1.0.0', description: '', name: 'ARTIFACT_VERSION', trim: false)])])
-    }
+    
     stages{
 
     stage('Upload into Nexus repository') {
