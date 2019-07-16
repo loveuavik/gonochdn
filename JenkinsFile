@@ -16,7 +16,7 @@ pipeline {
                   sh label: '', returnStatus: true, script: '''
                   cp -R /var/lib/jenkins/smart-businesstax-discovery-inbound/*.zip $WORKSPACE
 
-                  VAR=$(ls)
+                  VAR=$(ls | grep *.zip)
                   mvn deploy:deploy-file \\
                       -DgroupId=com.ccsf.smart \\
                       -DartifactId=$ARTIFACT\\
