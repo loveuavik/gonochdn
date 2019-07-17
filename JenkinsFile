@@ -18,8 +18,8 @@ pipeline {
                   VAR=$(ls | grep *.zip)
                   mvn deploy:deploy-file \\
                       -DgroupId=com.ccsf.smart \\
-                      -DartifactId=$ARTIFACT\\
-                      -Dversion=$ARTIFACT_VERSION.$BUILD_NUMBER \\
+                      -DartifactId=${ARTIFACT}\\
+                      -Dversion=${ARTIFACT_VERSION}.${BUILD_NUMBER} \\
                       -Dpackaging=zip \\
                       -Dfile=$VAR \\
                       -DgeneratePom=true \\
@@ -37,12 +37,14 @@ pipeline {
               agent { label 'int-node-1' }
                   steps {
 
-                
+                ws("/deployment")
+                		                
+                {
                   sh label: '', script: '''
-                mvn dependency:get -DrepoUrl=http://10.0.14.106:8081/repository/com.ccsf.smart -Dartifact=com.ccsf.smart:$ARTIFACT:$ARTIFACT_VERSION.$BUILD_NUMBER:zip -Dtransitive=false -Ddest=$ARTIFACT-$BUILD_NUMBER.zip 
+                mvn dependency:get -DrepoUrl=http://10.0.14.106:8081/repository/com.ccsf.smart -Dartifact=com.ccsf.smart:${ARTIFACT}:${ARTIFACT_VERSION}.${BUILD_NUMBER}:zip -Dtransitive=false  
                 ls -lia
                 '''
-                
+                }
             }
         }
 
