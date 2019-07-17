@@ -40,12 +40,15 @@ pipeline {
                 ws("/deployment")
                 		                
                 {
+                withCredentials([usernamePassword(credentialsId: 'NexusAdmin', passwordVariable: 'Nexus_PWD', usernameVariable: 'Nexus_ID')]) {
                   sh label: '', script: '''
-                mvn dependency:get -DrepoUrl=http://10.0.14.106:8081/repository/com.ccsf.smart -Dartifact=com.ccsf.smart:${ARTIFACT}:${ARTIFACT_VERSION}.${BUILD_NUMBER}:zip -Dtransitive=false -Ddest=${ARTIFACT}-${ARTIFACT_VERSION}.${BUILD_NUMBER}.zip 
+                mvn dependency:get -DrepoUrl=http://$Nexus_ID:$Nexus_PWD@10.0.14.106:8081/repository/com.ccsf.smart -Dartifact=com.ccsf.smart:${ARTIFACT}:${ARTIFACT_VERSION}.${BUILD_NUMBER}:zip -Dtransitive=false -Ddest=${ARTIFACT}-${ARTIFACT_VERSION}.${BUILD_NUMBER}.zip 
                 ls -lia
                 '''
                 }
+               } 
             }
+          
         }
 
 
