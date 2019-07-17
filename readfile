@@ -1,0 +1,44 @@
+#!/usr/bin/env groovy
+
+def products
+def versions
+
+product {
+    dir('/app/JobRelease') {
+        products = sh (script: 'cat latest_release.txt |awk '{print $1}' FS=:', returnStdout: true).trim()
+    }
+}
+
+pipeline {
+agent master
+    parameters {
+            choice(name: 'Environment', choices:"TEST", description: "Select the environment in which you want to do the Deployment" )
+            choice(name: 'Products', choices:"${products}", description: "")
+    }
+    stages {
+        stage("Choose Parameters") {
+            steps {
+                script {
+                    def version_collection
+                    def chosen_product = "${params.Products}"
+                    dir('/app/JobRelease') {
+                         version_collection = sh (script: "cat latest_release.txt |grep ${chosen_product}| awk '{print $1}' FS=:", returnStdout: true).trim()
+                    }
+                        versions = input message: 'Choose version!', ok: 'SET', parameters: [choice(name: 'VERSION', choices: "${version_collection}", description: '')]
+
+
+        stage("build") {
+            steps {
+                script {
+                    build(job: "builder-job",
+                        parameters:
+                        [
+                        string(name: 'Environment', value: "${params.Environment}"),
+                        string(name: 'Products', value: "${params.Products}"),  
+                        string(name: 'Versions', value: "${versions}"),
+                        ])
+                }
+            }
+        }
+    }
+}
