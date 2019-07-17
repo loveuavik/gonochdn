@@ -5,7 +5,7 @@ def versions
 
 product {
     dir('/app/JobRelease') {
-        products = sh (script: 'cat latest_release.txt |awk '{print $1}' FS=:', returnStdout: true).trim()
+        products = sh label: '', returnStatus: true, script: 'cat latest_release.txt |awk \'{print $1}\' FS=:'.trim()
     }
 }
 
@@ -22,7 +22,7 @@ agent master
                     def version_collection
                     def chosen_product = "${params.Products}"
                     dir('/app/JobRelease') {
-                         version_collection = sh (script: "cat latest_release.txt |grep ${chosen_product}| awk '{print $1}' FS=:", returnStdout: true).trim()
+                         version_collection = sh label: '', returnStatus: true, script: 'cat latest_release.txt |grep ${chosen_product}| awk \'{print $1}\' FS=:'.trim()
                     }
                         versions = input message: 'Choose version!', ok: 'SET', parameters: [choice(name: 'VERSION', choices: "${version_collection}", description: '')]
 
