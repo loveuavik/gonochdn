@@ -24,7 +24,7 @@ pipeline {
                     def version_collection
                     def chosen_product = "${params.Products}"
                     dir('/app/JobRelease') {
-                         version_collection = sh label: '', script: 'cat latest_release.txt |awk \'{print $1}\' FS=:'
+                        version_collection = sh label: '', script: 'cat latest_release.txt |grep ${chosen_product}|awk \'{print $1}\' FS=:'
                     }
                         versions = input message: 'Choose version!', ok: 'SET', parameters: [choice(name: 'VERSION', choices: "${version_collection}", description: '')]
                 }
