@@ -32,7 +32,7 @@ agent any
                     def version_collection
                     def chosen_product = "${params.Products}"
                     dir('/app/JobRelease') {
-                         version_collection = sh (script: "cat latest_release.txt | grep smart-ttx-annualroll-outbound |awk \'{print $2}\' FS=:", returnStdout: true).trim()
+                         version_collection = sh (script: 'cat latest_release.txt |grep smart-ttx-annualroll-outbound|awk \'{print $2}\' FS=:', returnStdout: true).trim()
                     }
                         versions = input message: 'Choose testload version!', ok: 'SET', parameters: [choice(name: 'TESTLOAD_VERSION', choices: "${version_collection}", description: '')]
 
