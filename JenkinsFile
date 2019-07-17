@@ -42,6 +42,8 @@ pipeline {
                 {
                 withCredentials([usernamePassword(credentialsId: 'NexusAdmin', passwordVariable: 'Nexus_PWD', usernameVariable: 'Nexus_ID')]) {
                   sh label: '', script: '''
+                export M2_HOME=/opt/maven 
+                export PATH=$PATH:$M2_HOME/bin
                 mvn dependency:get -DrepoUrl=http://$Nexus_ID:$Nexus_PWD@10.0.14.106:8081/repository/com.ccsf.smart -Dartifact=com.ccsf.smart:${ARTIFACT}:${ARTIFACT_VERSION}.${BUILD_NUMBER}:zip -Dtransitive=false -Ddest=${ARTIFACT}-${ARTIFACT_VERSION}.${BUILD_NUMBER}.zip 
                 ls -lia
                 '''
