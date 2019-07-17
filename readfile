@@ -1,4 +1,5 @@
 #!/usr/bin/env groovy
+import groovy.json.JsonSlurper
 
 def products
 def versions
@@ -7,13 +8,14 @@ def product() {
     dir('/app/JobRelease') {
         products = sh label: '', script: 'cat latest_release.txt |awk \'{print $1}\' FS=:'
     }
+    return products
 }
 
 pipeline {
     agent {label 'master'}
     parameters {
             choice(name: 'Environment', choices:"TEST", description: "Select the environment in which you want to do the Deployment" )
-            choice(name: 'Products', choices:"${products}", description: "")
+            choice(name: 'Products', choices:product(), description: "Choose products")
     }
     stages {
         stage("Choose Parameters") {
