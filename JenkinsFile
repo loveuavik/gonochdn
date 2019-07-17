@@ -61,8 +61,14 @@ pipeline {
                        cp RELEASE_${ARTIFACT_VERSION}.${BUILD_NUMBER}.txt latest_release.txt
                        '''
                        }
-            cleanWs()
+           
           }
-        }    
+        }
+        
+        post { 
+        always { 
+            cleanWs()
+         }
+        }
     }  
       
