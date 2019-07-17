@@ -1,11 +1,11 @@
 #!/usr/bin/env groovy
 
-def nodes
+def products
 def versions
 
-node {
-    dir('/home/pencillr/workspace') {
-        nodes = sh (script: 'sh list_nodes.sh', returnStdout: true).trim()
+def product() {
+    dir('/app/JobRelease') {
+        products = sh (script: 'cat latest_release.txt |awk \'{print $1}\' FS=:', returnStdout: true).trim()
     }
 }
 
@@ -13,7 +13,7 @@ pipeline {
 agent any
     parameters {
             choice(name: 'Invoke_Parameters', choices:"Yes\nNo", description: "Do you whish to do a dry run to grab parameters?" )
-            choice(name: 'Nodes', choices:"${nodes}", description: "")
+            choice(name: 'Products, choices:"${products}", description: "")
     }
     stages {
         stage("parameterizing") {
@@ -30,9 +30,9 @@ agent any
             steps {
                 script {
                     def version_collection
-                    def chosen_node = "${params.Nodes}"
-                    dir('/home/pencillr/workspace') {
-                         version_collection = sh (script: "sh list_versions.sh $chosen_node", returnStdout: true).trim()
+                    def chosen_product = "${params.Products}"
+                    dir('/app/JobRelease') {
+                         version_collection = sh (script: "cat latest_release.txt | grep smart-ttx-annualroll-outbound |awk \'{print $2}\' FS=:", returnStdout: true).trim()
                     }
                         versions = input message: 'Choose testload version!', ok: 'SET', parameters: [choice(name: 'TESTLOAD_VERSION', choices: "${version_collection}", description: '')]
 
