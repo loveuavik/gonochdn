@@ -3,7 +3,7 @@
 def products
 def versions
 
-def product {
+def product() {
     dir('/app/JobRelease') {
         products = sh label: '', script: 'cat latest_release.txt |awk \'{print $1}\' FS=:'
     }
