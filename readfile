@@ -10,7 +10,7 @@ product {
 }
 
 pipeline {
-agent master
+    agent {label 'master'}
     parameters {
             choice(name: 'Environment', choices:"TEST", description: "Select the environment in which you want to do the Deployment" )
             choice(name: 'Products', choices:"${products}", description: "")
