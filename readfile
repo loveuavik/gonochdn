@@ -17,9 +17,11 @@ agent { label 'master'}
                     }
                     products = input message: 'Choose  Product!', ok: 'SET', parameters: [choice(name: 'PRODUCTS', choices: "${products_collection}", description: '')]
                     dir('/app/JobRelease') {
-                        version_collection = sh (script: " " "awk \'/\'$products\'/{print $2}\' FS=: latest_release.txt " " ", returnStdout: true).trim()
+                        sh '''COLOR=${products}
+                              echo $COLOR'''
+                                                      
                     }
-                        
+                    version_collection = 1.0.0   
                     versions = input message: 'Choose version!', ok: 'SET', parameters: [choice(name: 'VERSION', choices: "${version_collection}", description: '')]
                 }
             }
