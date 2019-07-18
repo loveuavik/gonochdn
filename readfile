@@ -21,7 +21,7 @@ agent { label 'master'}
                         def abc = products
                         echo "$abc"
                         
-                        version_collection = sh """ cat latest_release.txt|grep $abc| awk \'{print $2}\' FS=:"""
+                        version_collection = sh """ cat latest_release.txt|grep $abc| awk '{print $2}' FS=:"""
                     } 
                     versions = input message: 'Choose version!', ok: 'SET', parameters: [choice(name: 'VERSION', choices: "${version_collection}", description: '')]
                 }
