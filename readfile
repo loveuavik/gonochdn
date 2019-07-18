@@ -3,7 +3,7 @@
 pipeline {
 agent { label 'master'}
     stages {
-        stage("choose version") {
+        stage("Select Product and Version") {
             steps {
                 script {
                     
@@ -25,13 +25,14 @@ agent { label 'master'}
         }
 
 
-        stage("build") {
+        stage("Deploy") {
             steps {
                 script {
                     build(job: "builder-job",
                         parameters:
-                        [string(name: 'Nodes', value: "${products}"),
-                        string(name: 'Versions', value: "${versions}"),
+                        [string(name: 'Environment', value: "TEST"),
+                        string(name: 'Product', value: "${products}"),
+                        string(name: 'Version', value: "${versions}"),
                         ])
                 }
             }
