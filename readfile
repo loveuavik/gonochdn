@@ -18,7 +18,8 @@ agent { label 'master'}
                     products = input message: 'Choose  Product!', ok: 'SET', parameters: [choice(name: 'PRODUCTS', choices: "${products_collection}", description: '')]
                     
                     dir('/app/JobRelease') {
-                        sh '''echo ${products} '''
+                        def abc = echo ${products}
+                        sh ''' echo ${abc} '''
                         version_collection = "1.0.0"
                     } 
                     versions = input message: 'Choose version!', ok: 'SET', parameters: [choice(name: 'VERSION', choices: "${version_collection}", description: '')]
