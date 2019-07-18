@@ -13,10 +13,10 @@ agent { label 'master'}
                     dir('/app/JobRelease') {
                          products_collection = sh (script: 'cat latest_release.txt |awk \'{print $1}\' FS=:', returnStdout: true).trim()
                     }
-                    products = input message: 'Choose  Product!', ok: 'SET', parameters: [choice(name: 'PRODUCTS', choices: "${products_collection}", description: '')]
+                    products = input message: 'Choose  Product!', ok: 'SET', parameters: [choice(name: 'PRODUCTS', choices: "${products_collection}", description: '', name: 'PRODUCT')]
                     echo "${products}"
                     dir('/app/JobRelease') {
-                         version_collection = sh (script: 'cat latest_release.txt | grep ${products} |awk \'{print $2}\' FS=:', returnStdout: true).trim()
+                         version_collection = sh (script: 'cat latest_release.txt | grep ${products['PRODUCT']} |awk \'{print $2}\' FS=:', returnStdout: true).trim()
                     }
                         
                     versions = input message: 'Choose version!', ok: 'SET', parameters: [choice(name: 'VERSION', choices: "${version_collection}", description: '')]
