@@ -28,7 +28,7 @@ agent { label 'master'}
         stage("Deploy") {
             steps {
                 script {
-                    build(job: "builder-job",
+                    build(job: "Deployment",
                         parameters:
                         [string(name: 'Environment', value: "TEST"),
                         string(name: 'Product', value: "${products}"),
