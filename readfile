@@ -20,7 +20,7 @@ agent { label 'master'}
                     dir('/app/JobRelease') {
                         def abc = products
                         echo "$abc"
-                        sh ''' cat latest_release.txt|grep '+abc+' '''
+                        sh """ cat latest_release.txt|grep $abc """
                         version_collection = "1.0.0"
                     } 
                     versions = input message: 'Choose version!', ok: 'SET', parameters: [choice(name: 'VERSION', choices: "${version_collection}", description: '')]
