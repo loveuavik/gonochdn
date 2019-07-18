@@ -21,7 +21,7 @@ agent { label 'master'}
                               echo $COLOR'''
                                                       
                     }
-                    version_collection = 1.0.0   
+                    version_collection = "1.0.0"   
                     versions = input message: 'Choose version!', ok: 'SET', parameters: [choice(name: 'VERSION', choices: "${version_collection}", description: '')]
                 }
             }
