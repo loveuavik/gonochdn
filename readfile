@@ -13,15 +13,14 @@ agent { label 'master'}
                     def products_collection
                     
                     dir('/app/JobRelease') {
-                    products_collection = sh (script: 'cat latest_release.txt |awk \'{print $1}\' FS=:', returnStdout: true).trim()
-                    
-                    products = input message: 'Choose  Product!', ok: 'SET', parameters: [choice(name: 'PRODUCTS', choices: "${products_collection}", description: '')]
-                    def abc = products
-                    
-                        echo "$abc"
-                                                      
+                          products_collection = sh (script: 'cat latest_release.txt |awk \'{print $1}\' FS=:', returnStdout: true).trim()
                     }
-                    version_collection = "1.0.0"   
+                    products = input message: 'Choose  Product!', ok: 'SET', parameters: [choice(name: 'PRODUCTS', choices: "${products_collection}", description: '')]
+                    
+                    dir('/app/JobRelease') {
+                          abc = echo "$products"
+                          version_collection = sh (script: 'awk \'/\'$abc\'/{print $2}\' FS=: latest_release.txt', returnStdout: true).trim()
+                    } 
                     versions = input message: 'Choose version!', ok: 'SET', parameters: [choice(name: 'VERSION', choices: "${version_collection}", description: '')]
                 }
             }
