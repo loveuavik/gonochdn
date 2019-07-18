@@ -17,7 +17,7 @@ agent { label 'master'}
                     }
                     products = input message: 'Choose  Product!', ok: 'SET', parameters: [choice(name: 'PRODUCTS', choices: "${products_collection}", description: '')]
                     dir('/app/JobRelease') {
-                        version_collection = sh (script: 'echo $products', returnStdout: true).trim()
+                        version_collection = sh (script: 'echo ${products}', returnStdout: true).trim()
                     }
                         
                     versions = input message: 'Choose version!', ok: 'SET', parameters: [choice(name: 'VERSION', choices: "${version_collection}", description: '')]
