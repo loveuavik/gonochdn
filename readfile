@@ -13,7 +13,7 @@ agent { label 'master'}
                     def products_collection
                     
                     dir('/app/JobRelease') {
-                          products_collection = sh (script: 'cat latest_release.txt | cut -d":" -f1| sort | uniq -u', returnStdout: true).trim()
+                          products_collection = sh (script: 'awk -F ":" \'{print $1}\' latest_release.txt|sort |uniq', returnStdout: true).trim()
                     }
                     products = input message: 'Choose  Product!', ok: 'SET', parameters: [choice(name: 'PRODUCTS', choices: "${products_collection}", description: '')]
                     
