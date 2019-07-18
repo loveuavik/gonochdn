@@ -19,7 +19,7 @@ agent { label 'master'}
                     
                     dir('/app/JobRelease') {
                           abc = echo "$products"
-                          version_collection = sh (script: 'awk \'/\'$abc\'/{print $2}\' FS=: latest_release.txt', returnStdout: true).trim()
+                        version_collection = sh (script: 'awk \'/\'${abc}\'/{print $2}\' FS=: latest_release.txt', returnStdout: true).trim()
                     } 
                     versions = input message: 'Choose version!', ok: 'SET', parameters: [choice(name: 'VERSION', choices: "${version_collection}", description: '')]
                 }
