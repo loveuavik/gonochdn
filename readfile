@@ -22,7 +22,7 @@ agent { label 'master'}
                         echo "$abc"
                         
                         sh """ cat latest_release.txt|grep $abc > product.txt """
-                        products_collection = sh (script: 'cat product.txt |awk \'{print $2}\' FS=:', returnStdout: true).trim()
+                        version_collection = sh (script: 'awk \'{print $2}\' FS=: product.txt', returnStdout: true).trim()
                         sh """ rm -rf product.txt """
                     } 
                     versions = input message: 'Choose version!', ok: 'SET', parameters: [choice(name: 'VERSION', choices: "${version_collection}", description: '')]
