@@ -1,29 +1,28 @@
 #!/usr/bin/env groovy
 
-def products
-def versions
-
-def product() {
-    dir('/app/JobRelease') {
-        products = sh (script: 'cat latest_release.txt |awk \'{print $1}\' FS=:', returnStdout: true).trim()
-    }
-}
-
 pipeline {
-agent any
-    parameters {
-        choice(name: 'Products', choices:"${products}", description: "" )
-    }
+agent { label 'master'}
     stages {
         stage("choose version") {
             steps {
                 script {
+                    
                     def version_collection
-                    def chosen_product = "${params.Products}"
+                    def products_collection
+                    
                     dir('/app/JobRelease') {
-                         version_collection = sh (script: 'cat latest_release.txt |grep smart-ttx-annualroll-outbound|awk \'{print $2}\' FS=:', returnStdout: true).trim()
+                         products_collection = sh (script: 'cat latest_release.txt |awk \'{print $1}\' FS=:', returnStdout: true).trim()
                     }
-                        versions = input message: 'Choose testload version!', ok: 'SET', parameters: [choice(name: 'TESTLOAD_VERSION', choices: "${version_collection}", description: '')]
+                    products = input message: 'Choose  Product!', ok: 'SET', parameters: [choice(name: 'PRODUCTS', choices: "${products_collection}", description: '')]
+                    
+                    dir('/app/JobRelease') {
+                         version_collection = sh (script: 'cat latest_release.txt | grep ${products} |awk \'{print $2}\' FS=:', returnStdout: true).trim()
+                    }
+                        
+                    versions = input message: 'Choose version!', ok: 'SET', parameters: [choice(name: 'VERSION', choices: "${version_collection}", description: '')]
+                }
+            }
+        }
 
 
         stage("build") {
@@ -31,14 +30,11 @@ agent any
                 script {
                     build(job: "builder-job",
                         parameters:
-                        [string(name: 'Nodes', value: "${params.Nodes}"),
+                        [string(name: 'Nodes', value: "${products}"),
                         string(name: 'Versions', value: "${versions}"),
                         ])
                 }
             }
         }
     }
-}
-}
-}
 }
