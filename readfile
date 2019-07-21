@@ -4,42 +4,61 @@ def products
 
 pipeline {
 agent { label 'master'}
-    stages {
-        stage("Select Product and Version") {
-            steps {
-                script {
-                    
-                    def version_collection
-                    def products_collection
-                    
-                    dir('/app/JobRelease') {
-                          products_collection = sh (script: 'awk -F ":" \'{print $1}\' latest_release.txt|sort |uniq', returnStdout: true).trim()
+    parameters 
+    {
+                  choice(name: 'Deployment_Type', choices:"Release\nDaily Build", description: "Select Deployment Type" )
+    }
+    stages 
+    {
+        stage("Select Product and Deployment after that") 
+        {
+            steps 
+            {
+                def versions_collection
+                def products_collection
+                script 
+                {
+                    if("${params.Deployment_Type}" == "Release")
+                    { 
+
+                          dir('/app/JobRelease')
+                          {
+                               products_collection = sh (script: 'awk -F ":" \'{print $1}\' latest_release.txt).trim()
+                               versions_collection = sh (script: 'awk -F ":" \'{print $2}\' latest_release.txt).trim()
+                          }
+                          def product, version
+                          for (product: products_collection, version: versions_collection)
+                          {
+                              build(job: "Deployment",
+                                    parameters:
+                                    [string(name: 'Environment', value: "TEST"),
+                                     string(name: 'Product', value: "${products}"),
+                                     string(name: 'Version', value: "${versions}"),
+                                    ])
+                               
+                          }
+                          
                     }
-                    products = input message: 'Choose  Product!', ok: 'SET', parameters: [choice(name: 'PRODUCTS', choices: "${products_collection}", description: '')]
-                    
-                    dir('/app/JobRelease') {
-                        def abc = products
-                        echo "$abc"
-                        
-                        sh """ cat latest_release.txt|grep $abc > product.txt """
-                        version_collection = sh (script: 'awk \'{print $2}\' FS=: product.txt', returnStdout: true).trim()
-                        sh """ rm -rf product.txt """
-                    } 
-                    versions = input message: 'Choose version!', ok: 'SET', parameters: [choice(name: 'VERSION', choices: "${version_collection}", description: '')]
-                }
-            }
-        }
-
-
-        stage("Deploy") {
-            steps {
-                script {
-                    build(job: "Deployment",
-                        parameters:
-                        [string(name: 'Environment', value: "TEST"),
-                        string(name: 'Product', value: "${products}"),
-                        string(name: 'Version', value: "${versions}"),
-                        ])
+                    else 
+                    {
+                          dir('/app/JobRelease') 
+                          {
+                              
+                              products_collection = sh (script: 'awk -F ":" \'{print $1}\' latest_release.txt|sort |uniq', returnStdout: true).trim()
+                          }
+                          products = input message: 'Choose  Product!', ok: 'SET', parameters: [choice(name: 'PRODUCTS', choices: "${products_collection}", description: '')]
+              
+                          dir('/app/JobRelease') 
+                          {
+                              def abc = products
+                              echo "$abc"
+                  
+                              sh """ cat latest_release.txt|grep $abc > product.txt """
+                              version_collection = sh (script: 'awk \'{print $2}\' FS=: product.txt', returnStdout: true).trim()
+                              sh """ rm -rf product.txt """
+                          }
+                          versions = input message: 'Choose version!', ok: 'SET', parameters: [choice(name: 'VERSION', choices: "${version_collection}", description: '')]                    
+                    }                    
                 }
             }
         }
