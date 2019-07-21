@@ -32,8 +32,8 @@ agent { label 'master'}
                               build(job: "Deployment",
                                     parameters:
                                     [string(name: 'Environment', value: "TEST"),
-                                     string(name: 'Product', value: "${products}"),
-                                     string(name: 'Version', value: "${versions}"),
+                                     string(name: 'Product', value: "${product}"),
+                                     string(name: 'Version', value: "${version}"),
                                     ])
                                
                           }
