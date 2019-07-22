@@ -27,8 +27,8 @@ agent { label 'master'}
                                versions_collection = sh (script: 'awk -F ":" \'{print $2}\' latest_release.txt', returnStdout: true).trim()
                           }
                         
-                        echo ${versions_collection}
-                        echo ${products_collection}
+                        echo "${versions_collection}"
+                        echo "${products_collection}"
                         
                         for (String product: ${products_collection})
                           {
