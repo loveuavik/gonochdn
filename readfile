@@ -30,9 +30,9 @@ agent { label 'master'}
                         echo "${versions_collection}"
                         echo "${products_collection}"
                         
-                        for (String product: ${products_collection})
+                        for (String product in products_collection)
                           {
-                               System.out.println(product)
+                              println product
                           }
                           
                     }
