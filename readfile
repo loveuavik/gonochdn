@@ -1,6 +1,8 @@
 #!/usr/bin/env groovy
 
 def products
+def versions_collection
+def products_collection
 
 pipeline {
 agent { label 'master'}
@@ -14,8 +16,6 @@ agent { label 'master'}
         {
             steps 
             {
-                def versions_collection
-                def products_collection
                 script 
                 {
                     if("${params.Deployment_Type}" == "Release")
