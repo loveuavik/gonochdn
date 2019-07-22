@@ -26,7 +26,7 @@ agent { label 'master'}
                                          def arr = line.tokenize(':')
                                          def product = arr[0]
                                          def version = arr[1]
-                                         
+                                         println "product : ${product}  version: ${version}" 
                                          build(job: "Deployment",
                                                  parameters:
                                                  [string(name: 'Environment', value: "TEST"),
