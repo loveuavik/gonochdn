@@ -22,8 +22,8 @@ agent { label 'master'}
                     { 
                         def bodyFile = new File("/app/JobRelease/latest_release").getText()
                         bodyFile.eachLine { line ->
-                                         def arr = line.tokenize(';')
-                                         println "id: ${arr[0]}, name: ${arr[1]}, email: ${arr[2]}, sibling: ${arr[3]}"
+                                         def arr = line.tokenize(':')
+                                         println "product: ${arr[0]}, version: ${arr[1]}"
                         }
                               
                     }
