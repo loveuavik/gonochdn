@@ -24,10 +24,15 @@ agent { label 'master'}
                         
                         bodyFile.each { line ->
                                          def arr = line.tokenize(':')
-                                        
-                                         println "product: ${arr[0]}, version: ${arr[1]}"
-                                          def product = arr[0]
-                                          println "${product}"
+                                         def product = arr[0]
+                                         def version = arr[1]
+                                         
+                                         build(job: "Deployment",
+                                                 parameters:
+                                                 [string(name: 'Environment', value: "TEST"),
+                                                 string(name: 'Product', value: "${product}"),
+                                                 string(name: 'Version', value: "${version}"),
+                                        ])
                                           
                         }
                               
