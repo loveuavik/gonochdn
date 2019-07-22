@@ -9,6 +9,10 @@ agent { label 'master'}
     parameters 
     {
                   choice(name: 'Deployment_Type', choices:"Release\nDaily Build", description: "Select Deployment Type" )
+                  if("${params.Deployment_Type}" == "Daily Build")
+                  { 
+                    choice(name: 'Product_Type', choices:"smart-ttx-annualroll-outbound\nsmart-ttx-rollcorrection-outbound\nsmart-businesstax-discovery-inbound", description: "Select Product Type" )  
+                  }
     }
     stages 
     {
@@ -39,6 +43,8 @@ agent { label 'master'}
                     }
                     else 
                     {
+                             
+                          
                           dir('/app/JobRelease') 
                           {
                               
