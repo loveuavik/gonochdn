@@ -30,7 +30,7 @@ agent { label 'master'}
                         echo "${versions_collection}"
                         echo "${products_collection}"
                         
-                        def lines = "${verisons_collection}".split('\n');
+                        def lines = "${versions_collection}".split('\n');
                         println lines
                           
                     }
