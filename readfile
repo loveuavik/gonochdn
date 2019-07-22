@@ -9,10 +9,6 @@ agent { label 'master'}
     parameters 
     {
                   choice(name: 'Deployment_Type', choices:"Release\nDaily Build", description: "Select Deployment Type" )
-                  if("${params.Deployment_Type}" == "Daily Build")
-                  { 
-                    choice(name: 'Product_Type', choices:"smart-ttx-annualroll-outbound\nsmart-ttx-rollcorrection-outbound\nsmart-businesstax-discovery-inbound", description: "Select Product Type" )  
-                  }
     }
     stages 
     {
@@ -43,23 +39,16 @@ agent { label 'master'}
                     }
                     else 
                     {
-                             
-                          
                           dir('/app/JobRelease') 
                           {
                               
-                              products_collection = sh (script: 'awk -F ":" \'{print $1}\' latest_release.txt|sort |uniq', returnStdout: true).trim()
+                              products_collection = sh (script: 'awk -F ":" \'{print $1}\' latest_release.txt', returnStdout: true).trim()
                           }
                           products = input message: 'Choose  Product!', ok: 'SET', parameters: [choice(name: 'PRODUCTS', choices: "${products_collection}", description: '')]
               
-                          dir('/app/JobRelease') 
+                          dir('/app/JobRelease/$products') 
                           {
-                              def abc = products
-                              echo "$abc"
-                  
-                              sh """ cat latest_release.txt|grep $abc > product.txt """
-                              version_collection = sh (script: 'awk \'{print $2}\' FS=: product.txt', returnStdout: true).trim()
-                              sh """ rm -rf product.txt """
+                              products_collection = sh (script: 'ls -ltr', returnStdout: true).trim()    
                           }
                           versions = input message: 'Choose version!', ok: 'SET', parameters: [choice(name: 'VERSION', choices: "${version_collection}", description: '')]                    
                     }                    
