@@ -1,6 +1,7 @@
 #!/usr/bin/env groovy
 
 def products
+def daily_version
 def versions_collection
 def products_collection
 
@@ -51,8 +52,21 @@ agent { label 'master'}
                           {
                               versions_collection = sh (script: 'ls -A1', returnStdout: true).trim()
                           }
-                        echo "${versions_collection}"
-                                             
+                          daily_version = input message: 'Choose  Product!', ok: 'SET', parameters: [choice(name: 'Daily Version', choices: "${versions_collection}", description: '')]
+                          def bodyFile = new File("${daily_version}").readLines()
+                          bodyFile.each { line ->
+                                         def arr = line.tokenize(':')
+                                         def product = arr[0]
+                                         def version = arr[1]
+                                         println "product : ${product}  version: ${version}" 
+                                         build(job: "Deployment",
+                                                 parameters:
+                                                 [string(name: 'Environment', value: "TEST"),
+                                                 string(name: 'Product', value: "${product}"),
+                                                 string(name: 'Version', value: "${version}"),
+                                        ])
+                                          
+                          }
                     }                    
                 }
             }
