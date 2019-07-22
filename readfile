@@ -47,11 +47,9 @@ agent { label 'master'}
                           products = input message: 'Choose  Product!', ok: 'SET', parameters: [choice(name: 'PRODUCTS', choices: "${products_collection}", description: '')]
                           def path = products
                           echo "$path"
-                        dir("/app/JobRelease/${path}") 
+                          dir("/app/JobRelease/${path}") 
                           {
-                              products_collection = sh (script: 'ls -ltr', returnStdout: true).trim()  
-                              
-                              println "${products_collection}"
+                              versions_collection = sh (script: 'find ./  -printf "%f\n"', returnStdout: true).trim()
                           }
                                              
                     }                    
