@@ -48,9 +48,11 @@ agent { label 'master'}
               
                           dir('/app/JobRelease/$products') 
                           {
-                              products_collection = sh (script: 'ls -ltr', returnStdout: true).trim()    
+                              products_collection = sh (script: 'ls -ltr', returnStdout: true).trim()  
+                              
+                              println "${products_collection}"
                           }
-                          versions = input message: 'Choose version!', ok: 'SET', parameters: [choice(name: 'VERSION', choices: "${version_collection}", description: '')]                    
+                                             
                     }                    
                 }
             }
