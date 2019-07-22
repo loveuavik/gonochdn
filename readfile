@@ -23,18 +23,10 @@ agent { label 'master'}
                         def bodyFile = new File("/app/JobRelease/latest_release.txt").readLines()
                         
                         bodyFile.each { line ->
-                                         
-                                        { 
                                          def arr = line.tokenize(':')
-                            
-                                         build(job: "Deployment",
-                                               parameters:
-                                               [string(name: 'Environment', value: "TEST"),
-                                                string(name: 'Product', value: arr{0}),
-                                                string(name: 'Version', value: arr{1}),
-                                          ])
-                                          sleep(500)
-                                        }
+                                        
+                                          println ("$arr{0}", "$arr{1}")
+                                          
                         }
                               
                     }
