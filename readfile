@@ -49,7 +49,7 @@ agent { label 'master'}
                           echo "$path"
                           dir("/app/JobRelease/${path}") 
                           {
-                              versions_collection = sh (script: 'ls -A1', returnStdout: true).trim()
+                              versions_collection = sh (script: 'ls -Al', returnStdout: true).trim()
                           }
                                              
                     }                    
