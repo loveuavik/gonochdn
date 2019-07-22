@@ -26,7 +26,7 @@ agent { label 'master'}
                                          def arr = line.tokenize(':')
                                         
                                          println "product: ${arr[0]}, version: ${arr[1]}"
-                                          def product = ${arr[0]}
+                                          def product = arr[0]
                                           println "${product}"
                                           
                         }
