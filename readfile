@@ -46,7 +46,7 @@ agent { label 'master'}
                           }
                           products = input message: 'Choose  Product!', ok: 'SET', parameters: [choice(name: 'PRODUCTS', choices: "${products_collection}", description: '')]
               
-                          dir('/app/JobRelease/$products') 
+                        dir('/app/JobRelease/${products}') 
                           {
                               products_collection = sh (script: 'ls -ltr', returnStdout: true).trim()  
                               
