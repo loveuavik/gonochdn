@@ -23,8 +23,8 @@ agent { label 'master'}
 
                           dir('/app/JobRelease')
                           {
-                               products_collection = sh (script: 'awk -F ":" \'{print $1}\' latest_release.txt').trim()
-                               versions_collection = sh (script: 'awk -F ":" \'{print $2}\' latest_release.txt').trim()
+                               products_collection = sh (script: 'awk -F ":" \'{print $1}\' latest_release.txt|sort |uniq', returnStdout: true).trim()
+                               versions_collection = sh (script: 'awk -F ":" \'{print $2}\' latest_release.txt|sort |uniq', returnStdout: true).trim()
                           }
                         
                           for (String product: products_collection)
