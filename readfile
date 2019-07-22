@@ -45,8 +45,8 @@ agent { label 'master'}
                               products_collection = sh (script: 'awk -F ":" \'{print $1}\' latest_release.txt', returnStdout: true).trim()
                           }
                           products = input message: 'Choose  Product!', ok: 'SET', parameters: [choice(name: 'PRODUCTS', choices: "${products_collection}", description: '')]
-                          def path = /app/JobRelease/products
-                          dir('path') 
+                          def path = products
+                          dir('/app/JobRelease/$path') 
                           {
                               products_collection = sh (script: 'ls -ltr', returnStdout: true).trim()  
                               
