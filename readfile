@@ -23,7 +23,7 @@ agent { label 'master'}
                         def bodyFile = new File("/app/JobRelease/latest_release.txt").readLines()
                         bodyFile.each { line ->
                                          def arr = line.tokenize(':')
-                                         sleep (5000)
+                                         sleep (5)
                                         {
                                          build(job: "Deployment",
                                                parameters:
