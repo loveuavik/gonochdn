@@ -27,15 +27,9 @@ agent { label 'master'}
                                versions_collection = sh (script: 'awk -F ":" \'{print $2}\' latest_release.txt').trim()
                           }
                         
-                          for (String product: products_collection, String version: versions_collection)
+                          for (String product: products_collection)
                           {
-                              build(job: "Deployment",
-                                    parameters:
-                                    [string(name: 'Environment', value: "TEST"),
-                                     string(name: 'Product', value: "${product}"),
-                                     string(name: 'Version', value: "${version}"),
-                                    ])
-                               
+                               System.out.println(product)
                           }
                           
                     }
