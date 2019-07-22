@@ -29,7 +29,7 @@ agent { label 'master'}
                                                 string(name: 'Product', value: arr{0}),
                                                 string(name: 'Version', value: arr{1}),
                                           ])
-                                  sleep(30)
+                                  wait(30)
                         }
                               
                     }
