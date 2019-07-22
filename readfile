@@ -30,10 +30,8 @@ agent { label 'master'}
                         echo "${versions_collection}"
                         echo "${products_collection}"
                         
-                        for (String product in products_collection)
-                          {
-                              println product
-                          }
+                        def lines = "${verisons_collection}".split('\n');
+                        println lines
                           
                     }
                     else 
