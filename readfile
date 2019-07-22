@@ -29,6 +29,7 @@ agent { label 'master'}
                                                 string(name: 'Product', value: arr{0}),
                                                 string(name: 'Version', value: arr{1}),
                                           ])
+                                  sleep(time:30,unit:"SECONDS")
                         }
                               
                     }
