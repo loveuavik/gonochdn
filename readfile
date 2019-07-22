@@ -20,7 +20,7 @@ agent { label 'master'}
                 {
                     if("${params.Deployment_Type}" == "Release")
                     { 
-                        def bodyFile = new File("/app/JobRelease/latest_release.txt").getText()
+                        def bodyFile = new File("/app/JobRelease/latest_release.txt").readLines()
                         bodyFile.eachLine { line ->
                                          def arr = line.tokenize(':')
                                          println "product: ${arr[0]}, version: ${arr[1]}"
