@@ -53,7 +53,7 @@ agent { label 'master'}
                               versions_collection = sh (script: 'ls -A1', returnStdout: true).trim()
                           }
                           daily_version = input message: 'Choose  Product!', ok: 'SET', parameters: [choice(name: 'Daily Version', choices: "${versions_collection}", description: '')]
-                          def bodyFile = new File("${daily_version}").readLines()
+                          def bodyFile = new File("/app/JobRelease/${path}/${daily_version}").readLines()
                           bodyFile.each { line ->
                                          def arr = line.tokenize(':')
                                          def product = arr[0]
