@@ -34,7 +34,7 @@ agent { label 'master'}
                                          println "product : ${product}  version: ${version}" 
                                          build(job: "Deployment",
                                                  parameters:
-                                                 [string(name: 'Environment', value: "${Target_Env}"),
+                                                 [string(name: 'Environment', value: "${params.Target_Env}"),
                                                  string(name: 'Product', value: "${product}"),
                                                  string(name: 'Version', value: "${version}"),
                                         ])
