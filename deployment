@@ -12,7 +12,7 @@ agent { label 'master'}
                   choice(name: 'Deployment_Type', choices:"Release\nDaily Build", description: "Select Deployment Type" )
                   choice(name: 'Source_Env', choices:"Dev\nTest", description: "Select Source Environment" )
                   choice(name: 'Target_Env', choices:"Test\nUAT\nPre-Prod", description: "Select Target Environment" )
-                  choice(name: 'Services', choices:"smart-businesstax-discovery-inbound\nsmart-ttx-annualroll-outbound\nsmart-ttx-rollcorrection-outbound", description: "Select Service" )
+                  choice(name: 'Services', choices:"smart-businesstax-discovery-inbound\nsmart-ttx-annualroll-outbound\nsmart-ttx-rollcorrection-outbound\nAll", description: "Select Service" )
                   string(defaultValue: " ", description: 'What environment?', name: 'version')
     }
     stages 
@@ -23,7 +23,7 @@ agent { label 'master'}
             {
                 script 
                 {
-                    if("${params.Deployment_Type}" == "Release")
+                    if("${params.Services}" == "All")
                     { 
                         def bodyFile = new File("/app/JobRelease/latest_release.txt").readLines()
                         
@@ -42,15 +42,44 @@ agent { label 'master'}
                         }
                               
                     }
-                    else 
+                    else if("${params.Deployment_Type}" == "Daily Build")
                     {
+                       if ("${params.Services}" == "All")
+                       {
+                           File file = new File("/app/JobRelease/RELEASE_"${params.version}".txt);
+                           if(file.exists())
+                           {
+                                  def bodyFile = new File("/app/JobRelease/latest_release.txt").readLines()
+                        
+                                  bodyFile.each { line ->
+                                         def arr = line.tokenize(':')
+                                         def product = arr[0]
+                                         def version = arr[1]
+                                         println "product : ${product}  version: ${version}" 
+                                         build(job: "Deployment",
+                                                 parameters:
+                                                 [string(name: 'Environment', value: "${params.Target_Env}"),
+                                                 string(name: 'Product', value: "${product}"),
+                                                 string(name: 'Version', value: "${version}"),
+                                        ])
+                                          
+                                  }
+                           }
+                           else 
+                           {
+                               System.exit(1)
+                           }
                               
-                              build(job: "Deployment",
-                                    parameters:
-                                    [string(name: 'Environment', value: "${params.Target_Env}"),
-                                     string(name: 'Product', value: "${params.Services}"),
-                                     string(name: 'Version', value: "${params.version}"),
-                              ])
+                        }
+                        else
+                        {
+                             build(job: "Deployment",
+                                   parameters:
+                                   [string(name: 'Environment', value: "${params.Target_Env}"),
+                                    string(name: 'Product', value: "${params.Services}"),
+                                    string(name: 'Version', value: "${params.version}"),
+                                    ])
+                         }
                     }                    
                 }
             }
