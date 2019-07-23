@@ -23,7 +23,7 @@ agent { label 'master'}
             {
                 script 
                 {
-                    if("${params.Services}" == "All")
+                    if("${params.Deployment_Type}" == "Release")
                     { 
                         def bodyFile = new File("/app/JobRelease/latest_release.txt").readLines()
                         
