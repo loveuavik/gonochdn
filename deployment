@@ -47,6 +47,7 @@ agent { label 'master'}
                        if ("${params.Services}" == "All")
                        {
                            def exists = fileExists "/app/JobRelease/RELEASE_${params.version}.txt"
+                           echo "${exists}"
                            if(exists)
                            {
                                   def bodyFile = readFile("/app/JobRelease/latest_release.txt")
