@@ -49,7 +49,7 @@ agent { label 'master'}
                            def a = "/app/JobRelease/RELEASE_${params.version}.txt"
                            def testFile = new File(a)
                            
-                           if(!"${a}".exists())
+                           if(!testFile.exists())
                            {
                                   def bodyFile = new File("/app/JobRelease/RELEASE_${params.version}.txt").readLines()
                         
