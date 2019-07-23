@@ -46,7 +46,7 @@ agent { label 'master'}
                     {
                        if ("${params.Services}" == "All")
                        {
-                           File file = new File("/app/JobRelease/RELEASE_"${params.version}".txt");
+                           File file = new File("/app/JobRelease/RELEASE_${params.version}.txt");
                            if(file.exists())
                            {
                                   def bodyFile = new File("/app/JobRelease/latest_release.txt").readLines()
