@@ -46,7 +46,6 @@ agent { label 'master'}
                     {
                        if ("${params.Services}" == "All")
                        {
-                           file.exists()
                            
                            println new File("/app/JobRelease/RELEASE_${params.version}.txt").exists()
                            
