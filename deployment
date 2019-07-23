@@ -25,7 +25,7 @@ agent { label 'master'}
                 {
                     if("${params.Deployment_Type}" == "Release")
                     { 
-                        def bodyFile = new File("/app/JobRelease/latest_release.txt").readLines()
+                        def bodyFile = readFile("/app/JobRelease/latest_release.txt").readLines()
                         
                         bodyFile.each { line ->
                                          def arr = line.tokenize(':')
@@ -49,7 +49,7 @@ agent { label 'master'}
                            def exists = fileExists "/app/JobRelease/RELEASE_${params.version}.txt"
                            if(exists)
                            {
-                                  def bodyFile = new File("/app/JobRelease/latest_release.txt").readLines()
+                                  def bodyFile = readFile("/app/JobRelease/latest_release.txt").readLines()
                         
                                   bodyFile.each { line ->
                                          def arr = line.tokenize(':')
