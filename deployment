@@ -67,7 +67,8 @@ agent { label 'master'}
                            }
                            else 
                            {
-                               System.exit(1)
+                               echo "Invalid param"
+
                            }
                               
                         }
