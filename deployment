@@ -13,7 +13,7 @@ agent { label 'master'}
                   choice(name: 'Source_Env', choices:"Dev\nTest", description: "Select Source Environment" )
                   choice(name: 'Target_Env', choices:"Test\nUAT\nPre-Prod", description: "Select Target Environment" )
                   choice(name: 'Services', choices:"smart-businesstax-discovery-inbound\nsmart-ttx-annualroll-outbound\nsmart-ttx-rollcorrection-outbound\nAll", description: "Select Service" )
-                  string(defaultValue: " ", description: 'What environment?', name: 'version')
+                  string(defaultValue: "", description: 'What environment?', name: 'version')
     }
     stages 
     {
@@ -46,9 +46,7 @@ agent { label 'master'}
                     {
                        if ("${params.Services}" == "All")
                        {
-                           
-                           def a = "/app/JobRelease/RELEASE_${params.version}.txt"
-                           println "${a}"
+                           println new File("/app/JobRelease/RELEASE_${params.version}.txt").exists()
                            
                            if(1)
                            {
