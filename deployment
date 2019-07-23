@@ -47,7 +47,8 @@ agent { label 'master'}
                        if ("${params.Services}" == "All")
                        {
                            
-                           println new File("/app/JobRelease/RELEASE_${params.version}.txt").exists()
+                           def a = "/app/JobRelease/RELEASE_${params.version}.txt"
+                           println "${a}"
                            
                            if(1)
                            {
