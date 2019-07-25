@@ -9,7 +9,7 @@ pipeline {
 agent { label 'master'}
     parameters 
     {
-                  choice(name: 'Deployment_Type', choices:"Release\nDaily Build", description: "Select Deployment Type" )
+                  choice(name: 'Deployment_Type', choices:"Latest\nAd-Hoc", description: "Select Deployment Type" )
     }
     stages 
     {
@@ -19,7 +19,7 @@ agent { label 'master'}
             {
                 script 
                 {
-                    if("${params.Deployment_Type}" == "Release")
+                    if("${params.Deployment_Type}" == "Latest")
                     { 
                         def bodyFile = new File("/app/JobRelease/latest_release.txt").readLines()
                         
