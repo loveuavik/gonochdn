@@ -1,3 +1,0 @@
-smart-businesstax-discovery-inbound:1.0.0.22
-smart-businesstax-discovery-inbound:1.0.0.23
-smart-businesstax-discovery-inbound:1.0.0.24
