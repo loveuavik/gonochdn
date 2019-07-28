@@ -29,7 +29,7 @@ agent { label 'master'}
                 script 
                 {    
                     def multiSelect= new ExtendedChoiceParameterDefinition("name", 
-            "PT_MULTI_SELECT", 
+            "PT_CHECKBOX", 
             "blue,green,yellow,blue", 
             "project name",
             "", 
