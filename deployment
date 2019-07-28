@@ -14,7 +14,10 @@ agent { label 'master'}
                   choice(name: 'Source_Env', choices:"Dev\nTest", description: "Select Source Environment" )
                   choice(name: 'Target_Env', choices:"Test\nUAT\nPre-Prod", description: "Select Target Environment" )
                   choice(name: 'Services', choices:"smart-businesstax-discovery-inbound\nsmart-ttx-annualroll-outbound\nsmart-ttx-rollcorrection-outbound\nAll", description: "Select Service" )
+                  /*
                   extendedChoice(name: 'Multi_Services', choices:"smart-businesstax-discovery-inbound\nsmart-ttx-annualroll-outbound\nsmart-ttx-rollcorrection-outbound\nAll", description: "Select Service" )
+                  */
+                  
                   string(defaultValue: "", description: 'What environment?', name: 'version')
     }
     stages 
@@ -24,8 +27,43 @@ agent { label 'master'}
             steps 
             {
                 script 
-                {
-                    println " Services selected as: ${params.Multi_Services} "
+                {    
+                    def multiSelect= new ExtendedChoiceParameterDefinition("name", 
+            "PT_MULTI_SELECT", 
+            "blue,green,yellow,blue", 
+            "project name",
+            "", 
+            "",
+            "", 
+            "", 
+            "", 
+            "", 
+            "", 
+            "", 
+            "", 
+            "", 
+            "", 
+            "", 
+            "", 
+            "blue,green,yellow,blue", 
+            "", 
+            "", 
+            "", 
+            "", 
+            "", 
+            "", 
+            "", 
+            "", 
+            false,
+            false, 
+            3, 
+            "multiselect", 
+            ",") 
+
+   def userInput = input  id: 'customID', message: 'Let\'s promote?', ok: 'Release!', parameters:  [multiSelect]
+
+
+echo "Hello: "+ userInput
                     if("${params.Deployment_Type}" == "Latest")
                     { 
                         def bodyFile = new File("/app/JobRelease/latest_release.txt").readLines()
