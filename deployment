@@ -92,30 +92,38 @@ agent { label 'master'}
                         }
                         else 
                         {
+                            def a = "/app/JobRelease/RELEASE_${params.version}.txt"
+                            def testFile = new File(a)
                             
-                             def bodyFile = new File("/app/JobRelease/RELEASE_${params.version}.txt").readLines()
+                            if(testFile.exists())
+                            {
+                            
+                                 def bodyFile = new File("/app/JobRelease/RELEASE_${params.version}.txt").readLines()
                         
-                             bodyFile.each { line ->
-                                         def arr = line.tokenize(':')
-                                         def product = arr[0]
-                                         def version = arr[1]
+                                 bodyFile.each { line ->
+                                                 def arr = line.tokenize(':')
+                                                 def product = arr[0]
+                                                 def version = arr[1]
                                          
-                                         if (StringUtils.contains("${params.Services}", "${product}"))
-                                         {
-                                              println "Service : ${product}  version: ${version}" 
+                                                 if (StringUtils.contains("${params.Services}", "${product}"))
+                                                 {
+                                                      println "Service : ${product}  version: ${version}" 
                                          
-                                              build(job: "Deployment",
-                                                    parameters:
-                                                    [string(name: 'Environment', value: "${params.Target_Env}"),
-                                                    string(name: 'Product', value: "${product}"),
-                                                    string(name: 'Version', value: "${version}"),
-                                              ])
-                                         }
+                                                      build(job: "Deployment",
+                                                            parameters:
+                                                            [string(name: 'Environment', value: "${params.Target_Env}"),
+                                                            string(name: 'Product', value: "${product}"),
+                                                            string(name: 'Version', value: "${version}"),
+                                                      ])
+                                                  }
                                           
-                              }
-                             
-                             
+                             }
+                             else 
+                             {
+                                  error('Invalid Version.')
+                             }
                         }
+                      }
                     }                    
                 }
             }
