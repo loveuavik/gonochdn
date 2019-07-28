@@ -69,13 +69,19 @@ agent { label 'master'}
                                          def arr = line.tokenize(':')
                                          def product = arr[0]
                                          def version = arr[1]
-                                         println "product : ${product}  version: ${version}" 
-                                         build(job: "Deployment",
-                                                 parameters:
-                                                 [string(name: 'Environment', value: "${params.Target_Env}"),
-                                                 string(name: 'Product', value: "${product}"),
-                                                 string(name: 'Version', value: "${version}"),
-                                        ])
+                                         
+                                      
+                                      if (StringUtils.contains("${params.Services}", "${product}"))
+                                      {
+                                              println "product : ${product}  version: ${version}" 
+                                         
+                                              build(job: "Deployment",
+                                                    parameters:
+                                                    [string(name: 'Environment', value: "${params.Target_Env}"),
+                                                    string(name: 'Product', value: "${product}"),
+                                                    string(name: 'Version', value: "${version}"),
+                                              ])
+                                      }
                                           
                                   }
                            }
@@ -86,15 +92,27 @@ agent { label 'master'}
                            }
                               
                         }
-                        else
+                        else 
                         {
-                             build(job: "Deployment",
-                                   parameters:
-                                   [string(name: 'Environment', value: "${params.Target_Env}"),
-                                    string(name: 'Product', value: "${params.Services}"),
-                                    string(name: 'Version', value: "${params.version}"),
-                                    ])
-                         }
+                            
+                            def bodyFile = new File("/app/JobRelease/RELEASE_${params.version}.txt").readLines()
+                        
+                                  bodyFile.each { line ->
+                                         def arr = line.tokenize(':')
+                                         def product = arr[0]
+                                         def version = arr[1]
+                                         println "product : ${product}  version: ${version}" 
+                                         build(job: "Deployment",
+                                                 parameters:
+                                                 [string(name: 'Environment', value: "${params.Target_Env}"),
+                                                 string(name: 'Product', value: "${product}"),
+                                                 string(name: 'Version', value: "${version}"),
+                                        ])
+                                          
+                                  }
+                             
+                             
+                        }
                     }                    
                 }
             }
