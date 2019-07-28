@@ -16,14 +16,14 @@ agent { label 'master'}
                   choice(name: 'Services', choices:"smart-businesstax-discovery-inbound\nsmart-ttx-annualroll-outbound\nsmart-ttx-rollcorrection-outbound\nAll", description: "Select Service" )
                   extendedChoice( 
                                     defaultValue: 'All', 
-                                    description: '', 
+                                    description: 'Please select the service which you want to deploy', 
                                     multiSelectDelimiter: ',', 
                                     name: 'SAMPLE_EXTENDED_CHOICE', 
                                     quoteValue: false, 
                                     saveJSONParameterToFile: false, 
                                     type: 'PT_CHECKBOX', 
-                                    value:'One,Two,Three,Four,Five,Six,Seven,Eight,Nine,Ten', 
-                                    visibleItemCount: 10)
+                                    value:'smart-businesstax-discovery-inbound,smart-ttx-annualroll-outbound,smart-ttx-rollcorrection-outbound,All', 
+                                    visibleItemCount: 4)
                   
                   string(defaultValue: "", description: 'What environment?', name: 'version')
     }
