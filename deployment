@@ -56,7 +56,7 @@ agent { label 'master'}
                     }
                     else if("${params.Deployment_Type}" == "Ad-Hoc")
                     {
-                        if (StringUtils.contains(${params.Services}, "All"))
+                        if (StringUtils.contains("${params.Services}", "All"))
                        {
                            def a = "/app/JobRelease/RELEASE_${params.version}.txt"
                            def testFile = new File(a)
