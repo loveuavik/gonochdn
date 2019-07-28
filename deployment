@@ -29,13 +29,13 @@ agent { label 'master'}
     }
     stages 
     {
-        stage("Select Product and Deployment after that") 
+        stage("Select parameters and Deployment after that") 
         {
             steps 
             {
                 script 
                 { 
-                    println "products : ${params.Services}"
+                    println "Services : ${params.Services}"
                     if("${params.Deployment_Type}" == "Latest")
                     { 
                         def bodyFile = new File("/app/JobRelease/latest_release.txt").readLines()
@@ -102,7 +102,7 @@ agent { label 'master'}
                                          
                                          if (StringUtils.contains("${params.Services}", "${product}"))
                                          {
-                                              println "product : ${product}  version: ${version}" 
+                                              println "Service : ${product}  version: ${version}" 
                                          
                                               build(job: "Deployment",
                                                     parameters:
