@@ -1,4 +1,5 @@
 #!/usr/bin/env groovy
+import com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterDefinition
 
 def products
 def daily_version
@@ -13,6 +14,7 @@ agent { label 'master'}
                   choice(name: 'Source_Env', choices:"Dev\nTest", description: "Select Source Environment" )
                   choice(name: 'Target_Env', choices:"Test\nUAT\nPre-Prod", description: "Select Target Environment" )
                   choice(name: 'Services', choices:"smart-businesstax-discovery-inbound\nsmart-ttx-annualroll-outbound\nsmart-ttx-rollcorrection-outbound\nAll", description: "Select Service" )
+                  multiSelect(name: 'Multi_Services', choices:"smart-businesstax-discovery-inbound\nsmart-ttx-annualroll-outbound\nsmart-ttx-rollcorrection-outbound\nAll", description: "Select Service" )
                   string(defaultValue: "", description: 'What environment?', name: 'version')
     }
     stages 
@@ -23,6 +25,7 @@ agent { label 'master'}
             {
                 script 
                 {
+                    println " Services selected as: ${params.Multi_Services} "
                     if("${params.Deployment_Type}" == "Latest")
                     { 
                         def bodyFile = new File("/app/JobRelease/latest_release.txt").readLines()
