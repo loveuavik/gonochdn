@@ -17,7 +17,7 @@ agent { label 'master'}
                   extendedChoice( 
                                     defaultValue: 'All', 
                                     description: 'Please select the service which you want to deploy', 
-                                    multiSelectDelimiter: ',', 
+                                    multiSelectDelimiter: ':', 
                                     name: 'Services', 
                                     quoteValue: false, 
                                     saveJSONParameterToFile: false, 
@@ -35,6 +35,7 @@ agent { label 'master'}
             {
                 script 
                 { 
+                    println "products : ${params.Services}"
                     if("${params.Deployment_Type}" == "Latest")
                     { 
                         def bodyFile = new File("/app/JobRelease/latest_release.txt").readLines()
