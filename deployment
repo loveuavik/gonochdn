@@ -100,7 +100,7 @@ agent { label 'master'}
                                          def product = arr[0]
                                          def version = arr[1]
                                          
-                                         if (StringUtils.contains("${product}", "${params.Services}"))
+                                         if (StringUtils.contains("${params.Services}", "${product}"))
                                          {
                                               println "product : ${product}  version: ${version}" 
                                          
