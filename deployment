@@ -2,11 +2,6 @@
 import com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterDefinition
 import org.apache.commons.lang.StringUtils;
 
-def products
-def daily_version
-def versions_collection
-def products_collection
-
 pipeline {
 agent { label 'master'}
     parameters 
@@ -29,21 +24,26 @@ agent { label 'master'}
     }
     stages 
     {
+        stage("Checkout Code")
+        {
+              checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'CleanBeforeCheckout']], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/loveuavik/jnkn.git']]])        
+        } 
         stage("Select parameters and Deployment after that") 
         {
             steps 
             {
                 script 
                 { 
+                    def product, version
                     println "Services : ${params.Services}"
                     if("${params.Deployment_Type}" == "Latest")
                     { 
-                        def bodyFile = new File("/app/JobRelease/latest_release.txt").readLines()
+                        def bodyFile = new File("${workspace}/${params.Source_Env}/latest_release.txt").readLines()
                         
                         bodyFile.each { line ->
                                          def arr = line.tokenize(':')
-                                         def product = arr[0]
-                                         def version = arr[1]
+                                         product = arr[0]
+                                         version = arr[1]
                                          println "product : ${product}  version: ${version}" 
                                          build(job: "Deployment",
                                                  parameters:
@@ -59,12 +59,12 @@ agent { label 'master'}
                     {
                         if (StringUtils.contains("${params.Services}", "All"))
                        {
-                           def a = "/app/JobRelease/RELEASE_${params.version}.txt"
+                           def a = "${workspace}/${params.Source_Env}/RELEASE_${params.version}.txt"
                            def testFile = new File(a)
                            
                            if(testFile.exists())
                            {
-                                  def bodyFile = new File("/app/JobRelease/RELEASE_${params.version}.txt").readLines()
+                                  def bodyFile = new File("${workspace}/${params.Source_Env}/RELEASE_${params.version}.txt").readLines()
                         
                                   bodyFile.each { line ->
                                          def arr = line.tokenize(':')
@@ -85,25 +85,25 @@ agent { label 'master'}
                            }
                            else 
                            {
-                               error('Invalid Version.')
-
+                               error('could not find version file ${version}')
                            }
                               
                         }
                         else 
                         {
-                            def a = "/app/JobRelease/RELEASE_${params.version}.txt"
+                            def a = "${workspace}/${params.Source_Env}/RELEASE_${params.version}.txt"
                             def testFile = new File(a)
+                            
                             
                             if(testFile.exists())
                             {
                             
-                                 def bodyFile = new File("/app/JobRelease/RELEASE_${params.version}.txt").readLines()
+                                 def bodyFile = new File("${workspace}/${params.Source_Env}/RELEASE_${params.version}.txt").readLines()
                         
                                  bodyFile.each { line ->
                                                  def arr = line.tokenize(':')
-                                                 def product = arr[0]
-                                                 def version = arr[1]
+                                                 product = arr[0]
+                                                 version = arr[1]
                                          
                                                  if (StringUtils.contains("${params.Services}", "${product}"))
                                                  {
@@ -121,7 +121,7 @@ agent { label 'master'}
                              }
                              else 
                              {
-                                  error('Invalid Version.')
+                                  error('could not find version file ${version}')
                              }
                         }
                       
