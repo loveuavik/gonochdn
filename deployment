@@ -59,12 +59,12 @@ agent { label 'master'}
                     {
                         if (StringUtils.contains("${params.Services}", "All"))
                        {
-                           def a = "${workspace}/${params.Source_Env}/RELEASE_${params.version}.txt"
+                           def a = "${WORKSPACE}/${params.Source_Env}/RELEASE_${params.version}.txt"
                            def testFile = new File(a)
                            
                            if(testFile.exists())
                            {
-                                  def bodyFile = new File("${workspace}/${params.Source_Env}/RELEASE_${params.version}.txt").readLines()
+                                  def bodyFile = new File("${WORKSPACE}/${params.Source_Env}/RELEASE_${params.version}.txt").readLines()
                         
                                   bodyFile.each { line ->
                                          def arr = line.tokenize(':')
@@ -91,14 +91,14 @@ agent { label 'master'}
                         }
                         else 
                         {
-                            def a = "${workspace}/${params.Source_Env}/RELEASE_${params.version}.txt"
+                            def a = "${WORKSPACE}/${params.Source_Env}/RELEASE_${params.version}.txt"
                             def testFile = new File(a)
                             
                             
                             if(testFile.exists())
                             {
                             
-                                 def bodyFile = new File("${workspace}/${params.Source_Env}/RELEASE_${params.version}.txt").readLines()
+                                 def bodyFile = new File("${WORKSPACE}/${params.Source_Env}/RELEASE_${params.version}.txt").readLines()
                         
                                  bodyFile.each { line ->
                                                  def arr = line.tokenize(':')
