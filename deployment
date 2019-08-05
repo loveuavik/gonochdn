@@ -45,7 +45,7 @@ agent { label 'master'}
                                          build(job: "Deployment",
                                                  parameters:
                                                  [string(name: 'Environment', value: "${params.Target_Env}"),
-                                                 string(name: 'Product', value: "${product}"),
+                                                 string(name: 'Service', value: "${product}"),
                                                  string(name: 'Version', value: "${version}"),
                                         ])
                                           
@@ -54,11 +54,11 @@ agent { label 'master'}
                     }
                     else if("${params.Deployment_Type}" == "Ad-Hoc")
                     {
+                        def releaseFile = "${WORKSPACE}/release/${params.Source_Env}/RELEASE_${params.version}.txt"
+                        def testFile = new File(releaseFile)
+                        
                         if (StringUtils.contains("${params.Services}", "All"))
-                       {
-                           def a = "${WORKSPACE}/release/${params.Source_Env}/RELEASE_${params.version}.txt"
-                           def testFile = new File(a)
-                           
+                        {
                            if(testFile.exists())
                            {
                                   def bodyFile = new File("${WORKSPACE}/release/${params.Source_Env}/RELEASE_${params.version}.txt").readLines()
@@ -73,7 +73,7 @@ agent { label 'master'}
                                          build(job: "Deployment",
                                                     parameters:
                                                     [string(name: 'Environment', value: "${params.Target_Env}"),
-                                                    string(name: 'Product', value: "${product}"),
+                                                    string(name: 'Service', value: "${product}"),
                                                     string(name: 'Version', value: "${version}"),
                                           ])
                                          
@@ -88,10 +88,6 @@ agent { label 'master'}
                         }
                         else 
                         {
-                            def  releaseFile = "${WORKSPACE}/release/${params.Source_Env}/RELEASE_${params.version}.txt"
-                            def testFile = new File(releaseFile)
-                            
-                            
                             if(testFile.exists())
                             {
                             
@@ -109,7 +105,7 @@ agent { label 'master'}
                                                       build(job: "Deployment",
                                                             parameters:
                                                             [string(name: 'Environment', value: "${params.Target_Env}"),
-                                                            string(name: 'Product', value: "${product}"),
+                                                            string(name: 'Service', value: "${product}"),
                                                             string(name: 'Version', value: "${version}"),
                                                       ])
                                                   }
