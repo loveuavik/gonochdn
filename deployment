@@ -20,7 +20,7 @@ agent { label 'master'}
                                     value:'smart-businesstax-discovery-inbound,smart-ttx-annualroll-outbound,smart-ttx-rollcorrection-outbound,All', 
                                     visibleItemCount: 4)
                   
-                  string(defaultValue: "", description: 'What environment?', name: 'version')
+                  string(defaultValue: "", description: 'Please Specify Version No Without "RELEASE" e.g. 1.0.0.1', name: 'version')
     }
     stages 
     {
