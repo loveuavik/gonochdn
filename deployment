@@ -26,8 +26,11 @@ agent { label 'master'}
     {
         stage("Checkout Code")
         {
+            steps
+            {
               checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'CleanBeforeCheckout']], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/loveuavik/jnkn.git']]])        
-        } 
+            }
+        }
         stage("Select parameters and Deployment after that") 
         {
             steps 
