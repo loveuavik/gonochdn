@@ -32,7 +32,6 @@ agent { label 'master'}
                 script 
                 { 
                     def product, version
-                    println "Services : ${params.Services}"
                     if("${params.Deployment_Type}" == "Latest")
                     { 
                         def bodyFile = new File("${workspace}/release/${params.Source_Env}/latest_release.txt").readLines()
