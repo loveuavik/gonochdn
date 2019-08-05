@@ -24,13 +24,7 @@ agent { label 'master'}
     }
     stages 
     {
-        stage("Checkout Code")
-        {
-            steps
-            {
-              checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'CleanBeforeCheckout']], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/loveuavik/jnkn.git']]])        
-            }
-        }
+       
         stage("Select parameters and Deployment after that") 
         {
             steps 
@@ -94,8 +88,8 @@ agent { label 'master'}
                         }
                         else 
                         {
-                            def a = "${WORKSPACE}/release/${params.Source_Env}/RELEASE_${params.version}.txt"
-                            def testFile = new File(a)
+                            def  releaseFile = "${WORKSPACE}/release/${params.Source_Env}/RELEASE_${params.version}.txt"
+                            def testFile = new File(releaseFile)
                             
                             
                             if(testFile.exists())
