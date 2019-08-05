@@ -6,12 +6,12 @@ pipeline {
 agent { label 'master'}
     parameters 
     {
-                  choice(name: 'Deployment_Type', choices:"Latest\nAd-Hoc", description: "Select Deployment Type" )
-                  choice(name: 'Source_Env', choices:"dev\ntest", description: "Select Source Environment" )
-                  choice(name: 'Target_Env', choices:"test\nuat\nPre-Prod", description: "Select Target Environment" )
+                  choice(name: 'Deployment_Type', choices:"Latest\nAd-Hoc", description: "Please Select Deployment Type" )
+                  choice(name: 'Source_Env', choices:"dev\ntest", description: "Please Select Source Environment" )
+                  choice(name: 'Target_Env', choices:"test\nuat\nPre-Prod", description: "Please Select Target Environment" )
                   extendedChoice( 
                                     defaultValue: 'All', 
-                                    description: 'Please select the service which you want to deploy', 
+                                    description: 'Please Select The Services You Want to Deploy, Deafult Nature is - All', 
                                     multiSelectDelimiter: ':', 
                                     name: 'Services', 
                                     quoteValue: false, 
