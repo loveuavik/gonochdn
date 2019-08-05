@@ -41,7 +41,7 @@ agent { label 'master'}
                                          service = arr[0]
                                          version = arr[1]
                                          println "Service : ${service}  version: ${version}" 
-                                         build(job: "Deployment",
+                                         build(job: "deploy-product",
                                                  parameters:
                                                  [string(name: 'Environment', value: "${params.Target_Env}"),
                                                  string(name: 'Product', value: "${service}"),
