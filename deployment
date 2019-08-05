@@ -53,12 +53,12 @@ agent { label 'master'}
                     }
                     else if("${params.Deployment_Type}" == "Ad-Hoc")
                     {
-                        def releaseFile = "${WORKSPACE}/release/${params.Source_Env}/RELEASE_${params.version}.txt"
-                        def testFile = new File(releaseFile)
+                        def releaseFileName = "${WORKSPACE}/release/${params.Source_Env}/RELEASE_${params.version}.txt"
+                        def releaseFile = new File(releaseFileName)
                         
                         if (StringUtils.contains("${params.Services}", "All"))
                         {
-                           if(testFile.exists())
+                           if(releaseFile.exists())
                            {
                                   def bodyFile = new File("${WORKSPACE}/release/${params.Source_Env}/RELEASE_${params.version}.txt").readLines()
                         
@@ -87,7 +87,7 @@ agent { label 'master'}
                         }
                         else 
                         {
-                            if(testFile.exists())
+                            if(releaseFile.exists())
                             {
                             
                                  def bodyFile = new File("${WORKSPACE}/release/${params.Source_Env}/RELEASE_${params.version}.txt").readLines()
