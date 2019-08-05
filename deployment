@@ -7,8 +7,8 @@ agent { label 'master'}
     parameters 
     {
                   choice(name: 'Deployment_Type', choices:"Latest\nAd-Hoc", description: "Select Deployment Type" )
-                  choice(name: 'Source_Env', choices:"Dev\nTest", description: "Select Source Environment" )
-                  choice(name: 'Target_Env', choices:"Test\nUAT\nPre-Prod", description: "Select Target Environment" )
+                  choice(name: 'Source_Env', choices:"dev\ntest", description: "Select Source Environment" )
+                  choice(name: 'Target_Env', choices:"test\nuat\nPre-Prod", description: "Select Target Environment" )
                   extendedChoice( 
                                     defaultValue: 'All', 
                                     description: 'Please select the service which you want to deploy', 
