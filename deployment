@@ -68,8 +68,8 @@ agent { label 'master'}
                         
                                   bodyFile.each { line ->
                                          def arr = line.tokenize(':')
-                                         def product = arr[0]
-                                         def version = arr[1]
+                                         product = arr[0]
+                                         version = arr[1]
                                       
                                          println "product : ${product}  version: ${version}" 
                                          
