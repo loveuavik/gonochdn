@@ -31,20 +31,20 @@ agent { label 'master'}
             {
                 script 
                 { 
-                    def product, version
+                    def service, version
                     if("${params.Deployment_Type}" == "Latest")
                     { 
                         def bodyFile = new File("${workspace}/release/${params.Source_Env}/latest_release.txt").readLines()
                         
                         bodyFile.each { line ->
                                          def arr = line.tokenize(':')
-                                         product = arr[0]
+                                         service = arr[0]
                                          version = arr[1]
-                                         println "Service : ${product}  version: ${version}" 
+                                         println "Service : ${service}  version: ${version}" 
                                          build(job: "Deployment",
                                                  parameters:
                                                  [string(name: 'Environment', value: "${params.Target_Env}"),
-                                                 string(name: 'Product', value: "${product}"),
+                                                 string(name: 'Product', value: "${service}"),
                                                  string(name: 'Version', value: "${version}"),
                                         ])
                                           
@@ -64,15 +64,15 @@ agent { label 'master'}
                         
                                   bodyFile.each { line ->
                                          def arr = line.tokenize(':')
-                                         product = arr[0]
+                                         service = arr[0]
                                          version = arr[1]
                                       
-                                         println "Service : ${product}  version: ${version}" 
+                                         println "Service : ${service}  version: ${version}" 
                                          
                                          build(job: "Deployment",
                                                     parameters:
                                                     [string(name: 'Environment', value: "${params.Target_Env}"),
-                                                    string(name: 'Product', value: "${product}"),
+                                                    string(name: 'Product', value: "${service}"),
                                                     string(name: 'Version', value: "${version}"),
                                           ])
                                          
@@ -94,17 +94,17 @@ agent { label 'master'}
                         
                                  bodyFile.each { line ->
                                                  def arr = line.tokenize(':')
-                                                 product = arr[0]
+                                                 service = arr[0]
                                                  version = arr[1]
                                          
-                                                 if (StringUtils.contains("${params.Services}", "${product}"))
+                                                 if (StringUtils.contains("${params.Services}", "${service}"))
                                                  {
-                                                      println "Service : ${product}  version: ${version}" 
+                                                     println "Service : ${service}  version: ${version}" 
                                          
                                                       build(job: "Deployment",
                                                             parameters:
                                                             [string(name: 'Environment', value: "${params.Target_Env}"),
-                                                            string(name: 'Product', value: "${product}"),
+                                                            string(name: 'Product', value: "${service}"),
                                                             string(name: 'Version', value: "${version}"),
                                                       ])
                                                   }
